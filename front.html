@@ -5,7 +5,7 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
     <title>Remote</title>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-    <meta name="viewport" content="width=device-width, user-scaleable=no" />
+    <meta name="viewport" content="width=device-width, user-scaleable=no, minimum-scale=1.0, maximum-scale=1.0" />
     <style type="text/css">
 body {
   font-family: sans-serif;
@@ -44,16 +44,17 @@ a:active {
       <li><a href="/index/?action=next">Next</a></li>
     </ul>
     <ul>
-      <li><a href="/index/?action=vol-up">Vol up</a></li>
-      <li><a href="/index/?action=mute">Mute</a></li>
-      <li><a href="/index/?action=vol-down">Vol down</a></li>
-    </ul>
-    <ul>
       <li><a href="/index/?action=seek-bkwd">&lt;&lt; Seek</a></li>
       <li><a href="/index/?action=stop">Stop</a></li>
       <li><a href="/index/?action=seek-fwd">Seek &gt;&gt;</a></li>
     </ul>
-    <a href="/index/?action=next-playlist" style="width: 40%; margin: 30px auto 0; padding: 15px 0">Next Playlist</a>
+    <ul>
+      <li><a href="/index/?action=vol-up">Vol up</a></li>
+      <li><a href="/index/?action=mute">Mute</a></li>
+      <li><a href="/index/?action=vol-down">Vol down</a></li>
+    </ul>
+    <a href="/index/?action=next-playlist"
+       style="width: 40%; margin: 30px auto 0; padding: 15px 0">Next Playlist</a>
     <script>
 document.ontouchmove = function () {
   return false;

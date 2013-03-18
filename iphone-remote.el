@@ -24,20 +24,36 @@
          ,@body
          ))))
 
+(defun ir-focus ()
+  (ir-with-playlist-window
+   (emms-playlist-mode-center-current)
+   (hl-line-highlight)))
+
 (defun ir-emms-process-action (action)
   (case action
     ( pause
       (emms-pause))
     ( next
-      (emms-queue-goto-next-track))
+      (if emms-player-playing-p
+          (if (fboundp 'emms-queue-goto-next-track)
+              (emms-queue-goto-next-track)
+              (emms-next))
+          (emms-playlist-current-select-next))
+      (ir-focus))
     ( prev
-      (emms-previous))
+      (if emms-player-playing-p
+          (emms-previous)
+          (emms-playlist-current-select-previous))
+      (ir-focus))
     ( vol-up
-      (shell-command "volume_up.sh"))
+      (es-silence-messages
+       (shell-command "volume_up.sh")))
     ( vol-down
-      (shell-command "volume_down.sh"))
+      (es-silence-messages
+       (shell-command "volume_down.sh")))
     ( mute
-      (shell-command "pa-vol.sh mute"))
+      (es-silence-messages
+       (shell-command "pa-vol.sh mute")))
     ( stop
       (emms-stop))
     ( seek-fwd
@@ -60,13 +76,18 @@
                  emms-buffers)))
          (set-window-buffer (selected-window) new-buf)
          (setq emms-playlist-buffer new-buf)
-         )))))
+         (ir-focus)))))
+  (when (executable-find "xdotool")
+    (es-silence-messages
+     (shell-command "xdotool key Alt"))))
 
 (defun ir-index-handler (httpcon)
   (let (( action-param (elnode-http-param httpcon "action")))
     (elnode-http-start httpcon 200 '("Content-type" . "text/html"))
     (when (stringp action-param)
-      (ir-emms-process-action (intern action-param)))
+      (condition-case error
+          (ir-emms-process-action (intern action-param))
+        (error (message "%s" error))))
     (elnode-http-return
      httpcon
      (with-temp-buffer
