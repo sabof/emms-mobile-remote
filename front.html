@@ -3,19 +3,68 @@
       xml:lang="en-gb" lang="en-gb" >
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
-    <title></title>
-    <link href=""
-          rel="stylesheet"
-          type="text/css" />
+    <title>Remote</title>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-    <meta name="viewport" content="width=1062px, user-scaleable=yes" />
-    <script>
-
-    </script>
+    <meta name="viewport" content="width=device-width, user-scaleable=no" />
     <style type="text/css">
+body {
+  font-family: sans-serif;
+  background: #000;
+  text-align: center;
+}
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow: hidden;
+}
+li {
+  width: 33%;
+  float:left;
+}
+a {
+  background: #666;
+  border-radius: 5px;
+  box-shadow: inset 0 0 0 2px black;
+  display: block;
+  padding: 30px 0;
+  text-decoration: none;
+  color: #fff;
+  font-weight: bold;
+}
+a:active {
+  background: #888;
+}
     </style>
   </head>
   <body>
-
+    <ul>
+      <li><a href="/index/?action=prev">Prev</a></li>
+      <li><a href="/index/?action=pause">Play/Pause</a></li>
+      <li><a href="/index/?action=next">Next</a></li>
+    </ul>
+    <ul>
+      <li><a href="/index/?action=vol-up">Vol up</a></li>
+      <li><a href="/index/?action=mute">Mute</a></li>
+      <li><a href="/index/?action=vol-down">Vol down</a></li>
+    </ul>
+    <ul>
+      <li><a href="/index/?action=seek-bkwd">&lt;&lt; Seek</a></li>
+      <li><a href="/index/?action=stop">Stop</a></li>
+      <li><a href="/index/?action=seek-fwd">Seek &gt;&gt;</a></li>
+    </ul>
+    <a href="/index/?action=next-playlist" style="width: 40%; margin: 30px auto 0; padding: 15px 0">Next Playlist</a>
+    <script>
+document.ontouchmove = function () {
+  return false;
+}
+$('ul a').click(
+  function () {
+    $.get($(this).attr('href'));
+    this.blur();
+    return false;
+  }
+);
+    </script>
   </body>
 </html>
