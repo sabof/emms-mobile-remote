@@ -46,14 +46,19 @@
           (emms-playlist-current-select-previous))
       (ir-focus))
     ( vol-up
-      (es-silence-messages
-       (shell-command "volume_up.sh")))
+      (emms-volume-raise)
+      ;; (es-silence-messages
+      ;;  (shell-command "volume_up.sh"))
+      )
     ( vol-down
-      (es-silence-messages
-       (shell-command "volume_down.sh")))
+      (emms-volume-lower)
+      ;; (es-silence-messages
+      ;;  (shell-command "volume_down.sh"))
+      )
     ( mute
-      (es-silence-messages
-       (shell-command "pa-vol.sh mute")))
+      (when (executable-find "pa-vol.sh")
+        (es-silence-messages
+         (shell-command "pa-vol.sh mute"))))
     ( stop
       (emms-stop))
     ( seek-fwd
@@ -82,17 +87,21 @@
      (shell-command "xdotool key Alt"))))
 
 (defun ir-index-handler (httpcon)
-  (let (( action-param (elnode-http-param httpcon "action")))
+  (elnode-http-start httpcon 200 '("Content-type" . "text/html"))
+  (elnode-http-return
+   httpcon
+   (with-temp-buffer
+     (insert-file-contents ir-front-html)
+     (buffer-string))))
+
+(defun ir-action-handler (httpcon)
+  (let (( action-param (elnode-http-param httpcon "a")))
     (elnode-http-start httpcon 200 '("Content-type" . "text/html"))
     (when (stringp action-param)
       (condition-case error
           (ir-emms-process-action (intern action-param))
-        (error (message "%s" error))))
-    (elnode-http-return
-     httpcon
-     (with-temp-buffer
-       (insert-file-contents ir-front-html)
-       (buffer-string)))))
+        (error (message "%s: %s: %s" action-param (car error) (cdr error)))))
+    (elnode-http-return httpcon)))
 
 (defun ir-root-handler (httpcon)
   (let (( map '(("action" . ir-action-handler)
