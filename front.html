@@ -19,7 +19,11 @@ ul {
   overflow: hidden;
 }
 li {
-  width: 33%;
+  width: 40%;
+  float:left;
+}
+li:nth-child(3) {
+  width: 20%;
   float:left;
 }
 a {
@@ -40,18 +44,18 @@ a:active {
   <body>
     <ul>
       <li><a href="/index/?action=prev">Prev</a></li>
-      <li><a href="/index/?action=pause">Play/Pause</a></li>
+      <li><a href="/index/?action=stop">Stop</a></li>
+      <li><a href="/index/?action=vol-up">Vol up</a></li>
+    </ul>
+    <ul>
       <li><a href="/index/?action=next">Next</a></li>
+      <li><a href="/index/?action=pause">Play/Pause</a></li>
+      <li><a href="/index/?action=vol-down">Vol down</a></li>
     </ul>
     <ul>
       <li><a href="/index/?action=seek-bkwd">&lt;&lt; Seek</a></li>
-      <li><a href="/index/?action=stop">Stop</a></li>
       <li><a href="/index/?action=seek-fwd">Seek &gt;&gt;</a></li>
-    </ul>
-    <ul>
-      <li><a href="/index/?action=vol-up">Vol up</a></li>
       <li><a href="/index/?action=mute">Mute</a></li>
-      <li><a href="/index/?action=vol-down">Vol down</a></li>
     </ul>
     <a href="/index/?action=next-playlist"
        style="width: 40%; margin: 30px auto 0; padding: 15px 0">Next Playlist</a>
