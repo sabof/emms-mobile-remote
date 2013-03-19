@@ -37,7 +37,7 @@ tr:nth-child(3) td {
 }
 td:nth-child(3) {
   width: 20%;
-  background: #555;
+  /* background: #555; */
   /* float:left; */
 }
 
@@ -55,8 +55,8 @@ td:active {
         <td tabindex="0" href="/action/?a=vol-up">Vol<br />up</td>
       </tr>
       <tr>
-        <td tabindex="0" href="/action/?a=prev">Prev</td>
-        <td tabindex="0" href="/action/?a=next">Next</td>
+        <td tabindex="0" href="/action/?a=prev">Prev track</td>
+        <td tabindex="0" href="/action/?a=next">Next track</td>
         <td tabindex="0" href="/action/?a=vol-down">Vol down</td>
       </tr>
       <tr>
@@ -64,14 +64,10 @@ td:active {
         <td tabindex="0" href="/action/?a=seek-fwd">Seek fwd</td>
         <td tabindex="0" href="/action/?a=mute">Mute</td>
       </tr>
-    </table>
-<br />
-<br />
-    <table style="width: 40%">
       <tr>
-        <td href="/action/?a=next-playlist">
-          Change Playlist
-        </td>
+        <td tabindex="0" href="/action/?a=prev-playlist">Prev playlist</td>
+        <td tabindex="0" href="/action/?a=next-playlist">Next playlist</td>
+        <td href="/action/?a=mute" style="background: #000"></td>
       </tr>
     </table>
     <script>
