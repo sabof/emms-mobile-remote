@@ -12,8 +12,10 @@ This package is requires elnode.
 - add it to your load path
 - Add to your .emacs
 
+```lisp
 (require 'emms-mobile-remote)
 (setq emr-pass "sesame")
+```
 
 - do M-x emms-mobile-remote-start
 - open shell and run ifconfig, and take not of the "inet addr" shown under eth0
