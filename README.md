@@ -7,10 +7,10 @@ This package requires elnode.
 
 ## Installation
 
-- create a folder,
-- put emms-mobile-remote.el and front.html to it
+- create a folder
+- put emms-mobile-remote.el and front.html in it
 - add it to your load path
-- Add to your .emacs
+- add to your .emacs:
 
 ```lisp
 (require 'emms-mobile-remote)
