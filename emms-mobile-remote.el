@@ -1,7 +1,10 @@
 (require 'elnode)
 (require 'emms)
-(require 'xmlgen)
+(require 'cl-lib)
+(require 'cl)
 
+(defvar emr-port 8000)
+(defvar emr-host nil)
 (defvar emr-front-html
   (concat
    (file-name-directory
@@ -9,9 +12,13 @@
         buffer-file-name))
    "front.html"))
 
+(defmacro emr-silence-messages (&rest body)
+  `(flet ((message (&rest ignore)))
+     ,@body))
+
 (defmacro emr-with-playlist-window (&rest body)
   `(let* (( emms-buffers (emms-playlist-buffer-list))
-          ( all-windows (reduce 'append (mapcar 'window-list (frame-list))))
+          ( all-windows (cl-reduce 'append (mapcar 'window-list (frame-list))))
           ( win (find-if (lambda (win)
                            (memq (window-buffer win) emms-buffers))
                          all-windows)))
@@ -23,7 +30,8 @@
 (defun emr-focus ()
   (emr-with-playlist-window
    (emms-playlist-mode-center-current)
-   (hl-line-highlight)))
+   (when (bound-and-true-p hl-line-mode)
+     (hl-line-highlight))))
 
 (defun emr-switch-playlist (offset)
   (emr-with-playlist-window
@@ -61,18 +69,19 @@
       (emr-focus))
     ( vol-up
       (if (executable-find "volume_up.sh")
-          (es-silence-messages
+          (emr-silence-messages
            (shell-command "volume_up.sh"))
           (emms-volume-raise)))
     ( vol-down
       (if (executable-find "volume_down.sh")
-          (es-silence-messages
+          (emr-silence-messages
            (shell-command "volume_down.sh"))
           (emms-volume-lower)))
     ( mute
-      (when (executable-find "pa-vol.sh")
-        (es-silence-messages
-         (shell-command "pa-vol.sh mute"))))
+      (if (executable-find "pa-vol.sh")
+          (emr-silence-messages
+           (shell-command "pa-vol.sh mute"))
+          (funcall emms-volume-change-function -100)))
     ( stop
       (emms-stop))
     ( seek-fwd
@@ -84,7 +93,7 @@
     ( prev-playlist
       (emr-switch-playlist -1)))
   (when (executable-find "xdotool")
-    (es-silence-messages
+    (emr-silence-messages
      (shell-command "xdotool key Alt"))))
 
 (defun emr-index-handler (httpcon)
@@ -109,13 +118,17 @@
                 ("index" . emr-index-handler))))
     (elnode-hostpath-dispatcher httpcon map)))
 
+(defun emr-guess-host ()
+  (let* (( host (shell-command-to-string "ip addr show eth0"))
+         (progn (string-match "inet \\(.+?\\)/" host)
+                (match-string 1 host)))))
+
+;;;###autoload
 (defun emms-mobile-remote-start ()
   (interactive)
-  (let* (( host (shell-command-to-string "ip addr show eth0"))
-         ( host (progn (string-match "inet \\(.+?\\)/" host)
-                       (match-string 1 host))))
+  (let* (( host (or emr-host (emr-guess-host))))
     (elnode-start 'emr-root-handler
-                  :port 8000
+                  :port emr-port
                   :host host)))
 
 (provide 'emms-mobile-remote)
