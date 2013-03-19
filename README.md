@@ -3,7 +3,7 @@ Control emms using your mobile
 
 ![screenshot](https://github.com/sabof/emms-mobile-remote/raw/master/screenshot.png)
 
-This package is requires elnode.
+This package requires elnode.
 
 ## Installation
 
