@@ -50,23 +50,23 @@ td:active {
   <body>
     <table>
       <tr>
-        <td tabindex="0" href="/action/?a=pause">Play/Pause</td>
-        <td tabindex="0" href="/action/?a=stop">Stop</td>
-        <td tabindex="0" href="/action/?a=vol-up">Vol<br />up</td>
+        <td tabindex="0" action="pause">Play/Pause</td>
+        <td tabindex="0" action="stop">Stop</td>
+        <td tabindex="0" action="vol-up">Vol<br />up</td>
       </tr>
       <tr>
-        <td tabindex="0" href="/action/?a=prev">Prev track</td>
-        <td tabindex="0" href="/action/?a=next">Next track</td>
-        <td tabindex="0" href="/action/?a=vol-down">Vol down</td>
+        <td tabindex="0" action="prev">Prev track</td>
+        <td tabindex="0" action="next">Next track</td>
+        <td tabindex="0" action="vol-down">Vol down</td>
       </tr>
       <tr>
-        <td tabindex="0" href="/action/?a=seek-bkwd">Seek bkwd</td>
-        <td tabindex="0" href="/action/?a=seek-fwd">Seek fwd</td>
-        <td tabindex="0" href="/action/?a=mute">Mute</td>
+        <td tabindex="0" action="seek-bkwd">Seek bkwd</td>
+        <td tabindex="0" action="seek-fwd">Seek fwd</td>
+        <td tabindex="0" action="mute">Mute</td>
       </tr>
       <tr>
-        <td tabindex="0" href="/action/?a=prev-playlist">Prev playlist</td>
-        <td tabindex="0" href="/action/?a=next-playlist">Next playlist</td>
+        <td tabindex="0" action="prev-playlist">Prev playlist</td>
+        <td tabindex="0" action="next-playlist">Next playlist</td>
         <td href="/action/?a=mute" style="background: #000"></td>
       </tr>
     </table>
@@ -74,10 +74,18 @@ td:active {
 document.ontouchmove = function () {
   return false;
 }
+function getURLParameter(name) {
+    return decodeURI(
+        (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
+    );
+}
 $('td').click(
   function () {
-    $.get($(this).attr('href'));
-    // this.blur();
+    var addr = '/action/?a=' +
+      $(this).attr('action') +
+      '&pass=' +
+      getURLParameter('pass');
+    console.log($.get(addr));
     return false;
   }
 );

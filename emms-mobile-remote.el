@@ -5,6 +5,8 @@
 
 (defvar emr-port 8000)
 (defvar emr-host nil)
+(defvar emr-pass "sesame")
+
 (defvar emr-front-html
   (concat
    (file-name-directory
@@ -115,8 +117,14 @@
 
 (defun emr-root-handler (httpcon)
   (let (( map '(("action" . emr-action-handler)
-                ("index" . emr-index-handler))))
-    (elnode-hostpath-dispatcher httpcon map)))
+                ("index" . emr-index-handler)))
+        ( entered-pass (elnode-http-param httpcon "pass")))
+    (if (equal entered-pass emr-pass)
+        (elnode-hostpath-dispatcher httpcon map)
+        (progn
+          (elnode-http-start httpcon 200 '("Content-type" . "text/html"))
+          (elnode-http-return httpcon "wrong password")
+          ))))
 
 (defun emr-guess-host ()
   (let* (( host (shell-command-to-string "ip addr show eth0"))
