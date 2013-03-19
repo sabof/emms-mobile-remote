@@ -71,24 +71,25 @@ td:active {
       </tr>
     </table>
     <script>
-document.ontouchmove = function () {
-  return false;
-}
+
 function getURLParameter(name) {
-    return decodeURI(
-        (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
-    );
-}
-$('td').click(
-  function () {
-    var addr = '/action/?a=' +
-      $(this).attr('action') +
-      '&pass=' +
-      getURLParameter('pass');
-    console.log($.get(addr));
-    return false;
-  }
-);
+  return decodeURI(
+    (RegExp(name + '=' + '(.+?)(&|$)')
+     .exec(location.search)||[,null])[1]); }
+
+function perform_action() {
+  var action = $(this).attr('action'),
+      pass = getURLParameter('pass');
+  if (action) {
+    var addr = '/action/?a=' + action +
+      '&pass=' + pass;
+    $.get(addr); }}
+
+document.ontouchmove = function () {
+  return false; }
+
+$('td').click(perform_action);
+
     </script>
   </body>
 </html>
