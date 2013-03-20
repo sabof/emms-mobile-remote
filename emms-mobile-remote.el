@@ -127,9 +127,9 @@
           ))))
 
 (defun emr-guess-host ()
-  (let* (( host (shell-command-to-string "ip addr show eth0"))
-         (progn (string-match "inet \\(.+?\\)/" host)
-                (match-string 1 host)))))
+  (let* (( host (shell-command-to-string "ip addr show eth0")))
+    (progn (string-match "inet \\(.+?\\)/" host)
+           (match-string 1 host))))
 
 ;;;###autoload
 (defun emms-mobile-remote-start ()
