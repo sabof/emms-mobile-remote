@@ -1,5 +1,5 @@
 # emms-mobile-remote
-Control emms using your mobile
+Control EMMS using your mobile
 
 ![screenshot](https://github.com/sabof/emms-mobile-remote/raw/master/screenshot.png)
 
@@ -18,7 +18,7 @@ This package requires elnode.
 ```
 
 - M-x emms-mobile-remote-start
-- Open shell and run ifconfig, and take not of the "inet addr" shown under eth0
+- Open shell and run ifconfig, and take note of the "inet addr" shown under eth0
 - In your mobile browser enter http://{the above value}/index/?pass={the value of emr-pass}
 - Open EMMS
 - In order to get a big a display, do M-: (set-face-attribute 'default (selected-frame) :height 300)
