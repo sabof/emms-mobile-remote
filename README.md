@@ -19,7 +19,7 @@ This package requires elnode.
 
 - M-x emms-mobile-remote-start
 - Open shell and run ifconfig, and take note of the "inet addr" shown under eth0
-- In your mobile browser enter http://{the above value}/index/?pass={the value of emr-pass}
+- In your mobile browser enter http://{the above value}/?pass={the value of emr-pass}
 - Open EMMS
 - In order to get a big a display, do M-: (set-face-attribute 'default (selected-frame) :height 300)
 

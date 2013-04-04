@@ -100,11 +100,7 @@
 
 (defun emr-index-handler (httpcon)
   (elnode-http-start httpcon 200 '("Content-type" . "text/html"))
-  (elnode-http-return
-   httpcon
-   (with-temp-buffer
-     (insert-file-contents emr-front-html)
-     (buffer-string))))
+  (elnode-send-file httpcon emr-front-html))
 
 (defun emr-action-handler (httpcon)
   (let (( action-param (elnode-http-param httpcon "a")))
@@ -116,11 +112,11 @@
     (elnode-http-return httpcon)))
 
 (defun emr-root-handler (httpcon)
-  (let (( map '(("action" . emr-action-handler)
-                ("index" . emr-index-handler)))
+  (let (( map '(("^/action/$" . emr-action-handler)
+                ("^/$" . emr-index-handler)))
         ( entered-pass (elnode-http-param httpcon "pass")))
     (if (equal entered-pass emr-pass)
-        (elnode-hostpath-dispatcher httpcon map)
+        (elnode-dispatcher httpcon map)
         (progn
           (elnode-http-start httpcon 200 '("Content-type" . "text/html"))
           (elnode-http-return httpcon "wrong password")
